@@ -1,0 +1,56 @@
+/**
+ * 题目：请实现一个函数，把字符串中的个空格替为"%20".例如输入"we are happy"，则输出"we%20are%20happy"
+ */
+
+/**
+问题1：替换字符串，是在原来的字符串上做替换，还是新开辟一个字符串做替换！
+问题2：在当前字符串替换，怎么替换才更有效率（不考虑java里现有的replace方法）。
+      从前往后替换，后面的字符要不断往后移动，要多次移动，所以效率低下
+      从后往前，先计算需要多少空间，然后从后往前移动，则每个字符只为移动一次，这样效率更高一点。
+*/
+public class wrk3 {
+    public String replaceSpace(StringBuffer str) {
+        if(str == null)
+            return null;
+        int length = str.length();
+        int numberOfBlank = 0;
+        for(int i = 0;i < length;i++){
+            if(str.charAt(i) == ' ')
+                ++numberOfBlank;
+        }
+        int newlength = length + numberOfBlank*2;
+        str.setLength(newlength);
+
+        int index = length - 1;
+        int indexNew = newlength - 1;
+        while(index >= 0){
+            if(str.charAt(index) == ' ') {
+
+                str.setCharAt(indexNew--,'0');
+                str.setCharAt(indexNew--,'2');
+                str.setCharAt(indexNew--,'%');
+
+            }
+            else{
+                str.setCharAt(indexNew--,str.charAt(index));
+            }
+            index--;
+        }
+
+        return str.toString();
+
+
+    }
+
+    public static void main(String args[])
+    {
+        StringBuffer str1 = new StringBuffer("we are happy");
+        StringBuffer str2 = new StringBuffer("dsfdsfy");
+        StringBuffer str3 = new StringBuffer(" sfdsfy ");
+        StringBuffer str4 = null;
+        System.out.println(new wrk3().replaceSpace(str1));
+        System.out.println(new wrk3().replaceSpace(str2));
+        System.out.println(new wrk3().replaceSpace(str3));
+        System.out.println(new wrk3().replaceSpace(str4));
+    }
+}
