@@ -1,0 +1,75 @@
+
+import java.util.ArrayList;
+import java.util.Stack;
+
+// 面试题6：从尾到头打印链表
+// 题目：输入一个链表的头结点，从尾到头反过来打印出每个结点的值。
+class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val){
+        this.val = val;
+
+    }
+
+}
+public class wrk4 {
+
+    // 使用栈
+    public ArrayList<Integer> printListFromTailToHead(ListNode listNode) {
+        ArrayList<Integer> list = new ArrayList<>();
+        Stack<Integer> stack = new Stack<>();
+        /**
+         *  注意此处不要加这个，因为下面已经有判断是否为空，而且已经有新建list。直接返回null也不合适
+         */
+//        if(null == listNode)
+//            return null;
+
+        while(listNode != null){
+            stack.push(listNode.val);
+            listNode = listNode.next;
+
+        }
+        while(!stack.isEmpty()){
+            list.add(stack.pop());
+        }
+
+        return list;
+
+    }
+
+
+
+    // 递归的方式
+    public ArrayList<Integer> SecondPrintListFromTailToHead(ListNode listNode){
+        ArrayList<Integer> list = new ArrayList<>();
+        if(listNode != null)
+        {
+            recycleout(listNode,list);
+        }
+
+        return list;
+
+    }
+
+    private void recycleout(ListNode listNode,ArrayList<Integer> list){
+/**此处注意是先判断下一个节点是否为空
+ *
+ */
+        if(listNode.next != null)
+            recycleout(listNode.next,list);
+
+        list.add(listNode.val);
+
+
+    }
+
+
+
+
+
+
+
+
+}
