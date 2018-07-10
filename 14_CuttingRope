@@ -1,0 +1,91 @@
+
+
+/**
+ * 题目：给你一根长度为n的绳子，请把绳子剪成m段
+ * (m和n都是整数，n>1并且m>1)每段绳子的长度记为k[0],k[1],…,k[m].
+ * 请问k[0]k[1]…*k[m]可能的最大乘积是多少？
+ * 例如，当绳子的长度为8时，我们把它剪成长度分别为2,3,3的三段，此时得到的最大乘积是18.
+ */
+public class Cutting {
+
+    public static void main(String[] args) {
+        int length = 4;
+//         int result = matProductAfterCutting_1(length);
+        int result = matProductAfterCutting_2(length);
+        System.out.println(result);
+    }
+
+    /**
+     * 贪婪算法
+     *
+     * @param length
+     * @return
+     */
+    private static int matProductAfterCutting_2(int length) {
+        if(length < 2)
+            return 0;
+        if(length == 2)
+            return 1;
+        if(length == 3)
+            return 2;
+// 当n>=5的时候，尽可能剪长度为3的绳子
+        int timesOf3 = length/3;
+        //如果绳子长度最后剩下为4的时候，就不要减去3
+        if((length - timesOf3*3) == 1)
+            timesOf3 = timesOf3-1;
+        //求长度为2的数目
+        int timesof2 = (length-3*timesOf3)/2;
+
+        return (int) (Math.pow(3,timesOf3)*Math.pow(2,timesof2));
+
+
+    }
+/**
+ * 思路：首先定义函数f(n)为把长度为n的绳子剪成若干段后各段长度乘积的最大值。
+ * 在剪第一刀时，我们有n-1种选择，也就是说第一段绳子的可能长度分别为1,2,3.....，n-1。
+ * 因此f(n)=max(f(i)*f(n-i))，其中0<i<n。
+ * 这是一个自上而下的递归公式。由于递归会有大量的不必要的重复计算。
+ * 一个更好的办法是按照从下而上的顺序计算，也就是说我们先得到f(2),f(3)，再得到f(4),f(5)，直到得到f(n)。
+ *
+ * 当绳子的长度为2的时候，只能剪成长度为1的两段，所以f(2) = 1，当n = 3时，容易得出f(3) = 2;
+ */
+    /**
+     * 动态规划
+     *
+     * @param length
+     * @return
+     */
+    private static int matProductAfterCutting_1(int length) {
+        if(length < 2)
+            return 0;
+        if(length == 2)
+            return 1;
+        if(length == 3)
+            return 2;
+        // 将最优解存储在数组中
+        int products[] = new int[length+1];
+        // 数组中第i个元素表示把长度为i的绳子剪成若干段之后的乘积的最大值
+        products[0] = 0;
+        products[1] = 1;
+        products[2] = 2;
+        products[3] = 3;
+        int max = 0;
+        int product = 0;
+        for (int i = 4 ;i <= length ; i++)
+        {
+            max = 0;
+            // 求出所有可能的f(j)*f(i-j)并比较出他们的最大值
+            for(int j = 1;j <= i/2 ; j++){
+                product = products[j]*products[i-j];
+                if(max < product)
+                    max = product;
+
+            }
+            products[i] = max;
+        }
+
+        return products[length];
+
+    }
+
+}
