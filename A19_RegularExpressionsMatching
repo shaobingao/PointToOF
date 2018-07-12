@@ -1,0 +1,49 @@
+
+
+public class A19_RegularExpressionsMatching {
+    public boolean match(char[] str, char[] pattern)
+    {
+        if(str == null && pattern == null)
+            return false;
+        return matchCore(str,0,pattern,0);
+
+    }
+
+    private boolean matchCore(char [] str,int strIndex,char[] pattern,int patternIndex){
+        //有效性检验：str到尾，pattern到尾，匹配成功
+        if(strIndex == str.length && patternIndex == pattern.length)
+            return true;
+        //pattern先到尾，匹配失败
+        if(strIndex != str.length && patternIndex == pattern.length)
+            return false;
+
+//模式第2个是*，且字符串第1个跟模式第1个匹配,分3种匹配模式；如不匹配，模式后移2位
+/**
+ * 有3种匹配方式：
+ * 1、模式后移2字符，相当于x*被忽略；
+ * 2、字符串后移1字符，模式后移2字符；
+ * 3、字符串后移1字符，模式不变，即继续匹配字符下一位，因为*可以匹配多位；
+  */
+        if(patternIndex+1 < pattern.length && pattern[patternIndex+1] == '*' ){
+            if((strIndex != str.length&& str[strIndex] == pattern[patternIndex] )|| (strIndex != str.length&&pattern[patternIndex] == '.'))
+            {
+                return (matchCore(str,strIndex,pattern,patternIndex+2))
+                        ||(matchCore(str,strIndex+1,pattern,patternIndex+2))
+                        ||(matchCore(str,strIndex+1,pattern,patternIndex));
+            }else{
+                return matchCore(str,strIndex,pattern,patternIndex+2);
+            }
+        }
+//模式第2个不是*，且字符串第1个跟模式第1个匹配，则都后移1位，否则直接返回false
+        /**
+         * 此处注意strIndex != str.length要放在str[strIndex] == pattern[patternIndex]前面，反着来就会导致错误
+         */
+        if((strIndex != str.length&& str[strIndex] == pattern[patternIndex] )|| (strIndex != str.length&&pattern[patternIndex] == '.'))
+            return matchCore(str,strIndex+1,pattern,patternIndex+1);
+        else
+            return false;
+
+
+
+    }
+}
