@@ -1,0 +1,52 @@
+
+/**
+ * 一. 题目
+ * 在一个排序的链表中，存在重复的结点，请删除该链表中重复的结点，重复的结点不保留，返回链表头指针。
+ * 二. 例子
+ * 输入链表：1->2->3->3->4->4->5
+ * 处理后为：1->2->5
+ */
+
+/**
+ * 个人感觉这题关键是注意指针的指向，可以定义一个first对象（值为-1，主要用于返回操作后的链表），
+ * first.next指向head，定义一个preNode同样指向first（主要用于操作记录要删除节点的前一个节点），定义一个pNode指向head，指向当前节点。
+ */
+
+/**
+ * 操作流程：
+ * ①先判断当前pNode指向与pNode.next指向是否为空，为空则进入⑤，不为空进入②；
+ * ②判断当前节点p的值与与pNode.next的值是否相等，如果相等，进入③，不相等，进入④
+ * ③记录pNode.val的值为val，循环判断val是否与当前pNode指向相等，相等的话pNode = pNode.next，preNode.next指向pNode；
+ * ④preNode指向pNode，pNode指向pNode.next；
+ * ⑤返回first.next；
+ */
+public class A18_2deleteDuplication {
+    private class ListNode {
+        int val;
+        ListNode next = null;
+
+        ListNode(int val) {
+            this.val = val;
+        }
+    }
+    public ListNode deleteDuplication(ListNode pHead) {
+        ListNode first = new ListNode(-1);
+        first.next = pHead;
+        ListNode preNode = first;
+        ListNode pNode = pHead;
+        while (pNode != null && pNode.next != null){
+            if(pNode.val == pNode.next.val){
+                int value = pNode.val;
+                while (pNode != null && pNode.val ==value){
+                    pNode = pNode.next;
+                    preNode.next = pNode;
+                }
+            }
+            else {
+                preNode = pNode;
+                pNode = pNode.next;
+            }
+        }
+        return first.next;
+    }
+}
