@@ -26,12 +26,13 @@ public class A22_FindKthToTail {
          ListNode p2 = head;
          int ktemp = k;
          while (--ktemp != 0){
-             p1 = p1.next;
+             
              /**
               * 此处用于判断当k超出链表的长度
               */
-             if(p1 == null)
+             if(p1.next == null)
                  return null;
+             p1 = p1.next;
          }
 
          while (p1.next != null){
