@@ -1,0 +1,64 @@
+
+import java.util.ArrayList;
+
+/**
+ * 输入一个矩阵，按照从外向里以顺时针的顺序依次打印出每一个数字，
+ * 例如，如果输入如下矩阵： 1 2 3 4
+ *                       5 6 7 8
+ *                       9 10 11 12
+ *                       13 14 15 16
+ * 则依次打印出数字1,2,3,4,8,12,16,15,14,13,9,5,6,7,11,10.
+ */
+/**解题思路：顺时针打印就是按圈数循环打印，一圈包含两行或者两列，
+ * 在打印的时候会出现某一圈中只包含一行，要判断从左向右打印和从右向左打印的时候是否会出现重复打印，
+ * 同样只包含一列时，要判断从上向下打印和从下向上打印的时候是否会出现重复打印的情况
+ * */
+public class A29_printMatrix {
+    public ArrayList<Integer> printMatrix(int [][] matrix) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if(matrix.length == 0 || matrix[0].length == 0)
+            return result;
+        int rows = matrix.length;
+        int colmuns = matrix[0].length;
+        int layers = (Math.min(rows,colmuns) - 1)/2 + 1;//这个是层数
+        //左至右
+        for(int i = 0; i<layers;i++){
+            for(int j = i;j<=colmuns-1-i;j++){
+                result.add(matrix[i][j]);
+                System.out.println(matrix[i][j]);
+            }
+            //右上至右下
+             for(int k = i+1; k <= rows-1-i ;k++){
+                    result.add(matrix[k][colmuns-1-i]);
+                 System.out.println(matrix[k][colmuns-1-i]);
+             }
+             //右至左
+            /**
+             * 注意条件，用(rows-1-i != i)来表示至少有两行
+             */
+             for(int j = colmuns -2-i; (j >=i) && (rows-1-i != i) ;j--){
+
+                 result.add(matrix[rows-1-i][j]);
+                 System.out.println(matrix[rows-1-i][j]);
+             }
+            //左下至左上
+            /**
+             * 注意条件，用(colmuns-1-i != i)来表示至少有两列；k = rows -2-i ; (k>i) 表示至少有三行
+             */
+             for (int k = rows -2-i ; (k>i) && (colmuns-1-i != i);k--){
+                result.add(matrix[k][i]);
+                 System.out.println(matrix[k][i]);
+             }
+
+
+        }
+        return result;
+
+    }
+
+    public static void main(String args[]){
+        int [][] mam = {{1,2},{3,4}};
+        int [][] aa = {{1},{2},{3},{4},{5}};
+        new A29_printMatrix().printMatrix(aa);
+    }
+}
