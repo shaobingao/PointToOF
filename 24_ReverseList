@@ -1,0 +1,71 @@
+
+/*
+public class ListNode {
+    int val;
+    ListNode next = null;
+
+    ListNode(int val) {
+        this.val = val;
+    }
+}*/
+/**
+ * 输入一个链表，反转链表后，输出新链表的表头。
+ */
+public class A24_ReverseList {
+    public ListNode ReverseList1(ListNode head) {
+        if(head == null)
+            return null;
+
+        ListNode pPrev = null;
+        ListNode pNode = head;
+        ListNode newHead = null;
+
+
+        while (pNode != null){
+            ListNode pNext = pNode.next;
+            if(pNext == null)
+                newHead = pNode;
+
+            pNode.next = pPrev;
+            pPrev = pNode;
+//            pNode = pNode.next;
+            /**
+             * 注意此处。不能用pNode = pNode.next;来求下一个点，因为next在前面已经被反转
+             */
+            pNode = pNext;
+
+        }
+
+        return newHead;
+
+
+    }
+
+    /**
+     * ）递归方法。先找到最后一个节点，然后从最后一个节点之前的那个节点的方法体中开始将下一个指向当前一个,
+     * 然后当前节点反转时其后面的节点已经进行反转了，不需要管。最后返回原来的最后一个节点。
+     * @param head
+     * @return
+     */
+
+
+    public ListNode ReverseList(ListNode head){
+        //如果链表为空或者链表中只有一个元素
+        if(head==null||head.next==null)
+            return head;
+
+        //先反转后面的链表，走到链表的末端结点
+        ListNode pReverseNode=ReverseList(head.next);
+        //再将当前节点设置为后面节点的后续节点
+        head.next.next=head;
+        head.next = null;
+
+        return pReverseNode;
+    }
+
+
+
+}
+
+
+
