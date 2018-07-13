@@ -1,0 +1,58 @@
+
+import java.util.Stack;
+/**
+ * 定义栈的数据结构，请在该类型中实现一个能够得到栈中所含最小元素的min函数。
+ */
+
+/**
+ * 思路：用一个栈data保存数据，用另外一个栈min保存依次入栈最小的数
+ * 比如，data中依次入栈，5,  4,  3, 8, 10, 11, 12, 1
+ *        则min依次入栈，5,  4,  3，3, 3,  3,  3, 1
+ *   当新插入不是最小的时候，继续插入之前最小值，每次出栈的时候两个栈都出数据
+ */
+public class A30_MinInStack {
+    Stack<Integer> dataStack = new Stack<>();
+    Stack<Integer> minStack = new Stack<>();
+    private int size = 0;  //此处用来标记当前栈是否为空
+    int temp = Integer.MAX_VALUE;
+    public void push(int node) {
+        if(size == 0){
+            dataStack.push(node);
+            minStack.push(node);
+            size++;
+            temp = node;
+        }
+        else {
+            dataStack.push(node);
+            if(node < temp){
+                temp = node;
+            }
+            minStack.push(temp);
+            size ++;
+        }
+    }
+
+    public void pop() {
+        int data = dataStack.pop();
+        int mindata = minStack.pop();
+        if(data == mindata){
+            temp = minStack.pop();
+            minStack.push(temp);
+        }
+        size --;
+    }
+
+    public int top() {
+
+        int num = dataStack.pop();
+        dataStack.push(num);
+        return num;
+    }
+
+    public int min() {
+
+        int num = minStack.pop();
+        minStack.push(num);
+        return num;
+    }
+}
