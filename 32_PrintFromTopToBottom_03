@@ -1,0 +1,92 @@
+import java.util.ArrayList;
+import java.util.Stack;
+
+/**
+ * 请实现一个函数按照之字形打印二叉树，即第一行按照从左到右的顺序打印，
+ * 第二层按照从右至左的顺序打印，第三行按照从左到右的顺序打印，其他行以此类推。
+ */
+
+/**
+ * 用两个stack来存储数据，第一个stack存储单行的数据，第二个stack存储偶数行的数据，然后注意单行存放子节点的时候是从左子树到
+ * 右子树，双行的时候存放子节点是从右子树到左子树
+ */
+public class A32_PrintFromTopToBottom_03 {
+    public static ArrayList<ArrayList<Integer> > Print(TreeNode pRoot) {
+        ArrayList<ArrayList<Integer>> aList=new ArrayList<ArrayList<Integer>>();
+        if(pRoot == null)
+            return aList;
+
+        Stack<TreeNode> stack1 = new Stack<>();
+        Stack<TreeNode> stack2 = new Stack<>();
+
+        boolean flag = false;
+        stack1.push(pRoot);
+
+        while (!stack1.isEmpty()|| !stack2.isEmpty()){
+            if(!stack1.isEmpty() ) {
+                ArrayList<Integer> aList2=new ArrayList<Integer>();
+                while (!stack1.isEmpty()) {
+                    TreeNode node = stack1.pop();
+                    if (node.left != null)
+                        stack2.push(node.left);
+                    if (node.right != null)
+                        stack2.push(node.right);
+                    System.out.print(node.val + " ");
+                    //判断当前一层是否都遍历完了，用flag区分不同层，当当前stack为空则设置flag值
+                    if (stack1.isEmpty()) {
+                        System.out.print('\n');
+                    }
+                    aList2.add(node.val);
+                }
+                aList.add(aList2);
+            }
+            if(!stack2.isEmpty()){
+                ArrayList<Integer> aList2=new ArrayList<Integer>();
+                while (!stack2.isEmpty()) {
+                    TreeNode node = stack2.pop();
+                    if (node.right != null)
+                        stack1.push(node.right);
+                    if (node.left != null)
+                        stack1.push(node.left);
+                    System.out.print(node.val + " ");
+                    if (stack2.isEmpty()) {
+                        System.out.print('\n');
+                    }
+                    aList2.add(node.val);
+                }
+                aList.add(aList2);
+            }
+        }
+        return aList;
+    }
+
+    public static void main(String[] args) {
+
+        TreeNode treeNodeCommon1 = new TreeNode(8);
+        TreeNode treeNodeCommon2 = new TreeNode(6);
+        TreeNode treeNodeCommon3 = new TreeNode(10);
+        TreeNode treeNodeCommon4 = new TreeNode(5);
+        TreeNode treeNodeCommon5 = new TreeNode(7);
+        TreeNode treeNodeCommon6 = new TreeNode(9);
+        TreeNode treeNodeCommon7 = new TreeNode(11);
+
+        treeNodeCommon1.left = treeNodeCommon2;
+        treeNodeCommon1.right = treeNodeCommon3;
+        treeNodeCommon2.left = treeNodeCommon4;
+        treeNodeCommon2.right = treeNodeCommon5;
+
+        treeNodeCommon3.left = treeNodeCommon6;
+        treeNodeCommon3.right = treeNodeCommon7;
+//        A32_PrintFromTopToBottom_2 printFromTopToBottom23 = new PrintFromTopToBottom23();
+
+        ArrayList<Integer> arrayList = PrintFromTopToBottom(treeNodeCommon1);
+
+
+//        System.out.println("从上到下存入结点" + arrayList);
+    }
+    /**
+     * 8
+     * 6 10
+     * 5 7 9 11
+     */
+}
