@@ -1,0 +1,71 @@
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.Queue;
+
+/**
+ * 与上题类似，只是要求打印成如下。
+ * 8
+ * 6 10
+ * 5 7 9 11
+ * 所以添加两个变量int currentcount = 1;
+ *         int nextcount = 0;   用于记录每层要记录的数目
+ */
+public class A32_PrintFromTopToBottom_2 {
+    public static ArrayList<Integer> PrintFromTopToBottom(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if(root == null)
+            return result;
+
+        Queue<TreeNode> queue = new LinkedList<>();
+        queue.offer(root);
+        int currentcount = 1;
+        int nextcount = 0;
+        while (!queue.isEmpty()){
+            TreeNode node = queue.poll();
+            currentcount--;
+            if(node.left != null){
+                queue.offer(node.left);
+                nextcount ++;
+            }
+            if(node.right != null) {
+                queue.offer(node.right);
+                nextcount ++;
+            }
+//            result.add(node.val);
+            System.out.print(node.val+" ");
+            if(currentcount == 0){
+                currentcount = nextcount;
+                nextcount = 0;
+                System.out.print('\n');
+            }
+        }
+        return result;
+
+    }
+
+    public static void main(String[] args) {
+
+        TreeNode treeNodeCommon1 = new TreeNode(8);
+        TreeNode treeNodeCommon2 = new TreeNode(6);
+        TreeNode treeNodeCommon3 = new TreeNode(10);
+        TreeNode treeNodeCommon4 = new TreeNode(5);
+        TreeNode treeNodeCommon5 = new TreeNode(7);
+        TreeNode treeNodeCommon6 = new TreeNode(9);
+        TreeNode treeNodeCommon7 = new TreeNode(11);
+
+        treeNodeCommon1.left = treeNodeCommon2;
+        treeNodeCommon1.right = treeNodeCommon3;
+        treeNodeCommon2.left = treeNodeCommon4;
+        treeNodeCommon2.right = treeNodeCommon5;
+
+        treeNodeCommon3.left = treeNodeCommon6;
+        treeNodeCommon3.right = treeNodeCommon7;
+//        A32_PrintFromTopToBottom_2 printFromTopToBottom23 = new PrintFromTopToBottom23();
+
+        ArrayList<Integer> arrayList = PrintFromTopToBottom(treeNodeCommon1);
+
+
+//        System.out.println("从上到下存入结点" + arrayList);
+    }
+
+}
