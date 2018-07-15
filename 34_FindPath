@@ -1,0 +1,49 @@
+import java.util.ArrayList;
+/**
+ public class TreeNode {
+ int val = 0;
+ TreeNode left = null;
+ TreeNode right = null;
+
+ public TreeNode(int val) {
+ this.val = val;
+
+ }
+ }
+ */
+
+/**
+ * 输入一颗二叉树的跟节点和一个整数，打印出二叉树中结点值的和为输入整数的所有路径。
+ * 路径定义为从树的根结点开始往下一直到叶结点所经过的结点形成一条路径。
+ * (注意: 在返回值的list中，数组长度大的数组靠前)
+ */
+public class A34_FindPath {
+    private ArrayList<ArrayList<Integer>> result = new ArrayList<>();
+    public ArrayList<ArrayList<Integer>> FindPath(TreeNode root,int target) {
+        if(root == null)
+            return result;
+        ArrayList<Integer> curr = new ArrayList<Integer>();
+        hasPath(root,target,curr);
+        return result;
+
+    }
+
+    private void hasPath(TreeNode root, int target, ArrayList<Integer> curr) {
+        if(root == null)
+            return;
+        curr.add(root.val);//先序遍历，先把值加上
+//如果此处是叶子节点且判断值
+        if(root.val == target && root.left == null && root.right == null){
+            result.add(curr);
+            return;
+        }
+//这里要分路了
+        ArrayList<Integer> lefttemp = (ArrayList<Integer>) curr.clone();
+        ArrayList<Integer> righttemp = (ArrayList<Integer>) curr.clone();
+
+        curr = null;
+        hasPath(root.left,target - root.val, lefttemp);
+        hasPath(root.right,target-root.val,righttemp);
+
+    }
+}
